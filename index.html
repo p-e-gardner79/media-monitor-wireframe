@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LPPA Media Monitor - Interactive Wireframe</title>
+    <style>
+        /* WIREFRAME STYLES - Black & White, High Contrast */
+        :root {
+            --bg-color: #ffffff;
+            --text-color: #333333;
+            --border-color: #000000;
+            --border-width: 2px;
+            --accent-gray: #f0f0f0;
+        }
+
+        body {
+            font-family: 'Courier New', Courier, monospace; /* Monospace for technical/wireframe feel */
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+        }
+
+        /* UTILS */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .btn {
+            background: #fff;
+            border: var(--border-width) solid var(--border-color);
+            padding: 8px 16px;
+            cursor: pointer;
+            font-family: inherit;
+            font-weight: bold;
+            text-transform: uppercase;
+            font-size: 14px;
+            transition: background 0.1s;
+        }
+
+        .btn:hover {
+            background: #000;
+            color: #fff;
+        }
+
+        .btn-primary {
+            background: #eee;
+        }
+
+        input, select {
+            border: var(--border-width) solid var(--border-color);
+            padding: 8px;
+            font-family: inherit;
+            font-size: 14px;
+            outline: none;
+        }
+
+        /* HEADER */
+        header {
+            border-bottom: var(--border-width) solid var(--border-color);
+            padding: 20px 0;
+            margin-bottom: 20px;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo-placeholder {
+            border: var(--border-width) solid var(--border-color);
+            padding: 10px 20px;
+            font-size: 20px;
+            font-weight: 900;
+            letter-spacing: 1px;
+            background: var(--accent-gray);
+        }
+
+        /* CONTROLS */
+        .controls-bar {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .search-group {
+            display: flex;
+            gap: 10px;
+            flex-grow: 1;
+        }
+
+        .search-input {
+            flex-grow: 1;
+        }
+
+        /* FILTERS */
+        .filters {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            border-bottom: 1px dashed #999;
+            padding-bottom: 20px;
+        }
+
+        .filter-chip {
+            border: 1px solid #000;
+            padding: 5px 12px;
+            cursor: pointer;
+            font-size: 12px;
+            user-select: none;
+        }
+
+        .filter-chip.active {
+            background: #000;
+            color: #fff;
+        }
+
+        /* GRID */
+        .news-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .card {
+            border: var(--border-width) solid var(--border-color);
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            background: #fff;
+            position: relative;
+        }
+
+        /* Category Tag on Card */
+        .card-tag {
+            position: absolute;
+            top: -10px;
+            right: 10px;
+            background: #000;
+            color: #fff;
+            padding: 2px 8px;
+            font-size: 10px;
+            text-transform: uppercase;
+        }
+
+        .card-source {
+            font-size: 12px;
+            color: #666;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .card-title {
+            font-size: 16px;
+            font-weight: bold;
+            margin: 5px 0 10px 0;
+            line-height: 1.4;
+            text-decoration: underline;
+        }
+
+        .card-date {
+            font-size: 11px;
+            color: #888;
+            margin-bottom: 15px;
+        }
+
+        .ai-summary-box {
+            background: var(--accent-gray);
+            border: 1px dashed #000;
+            padding: 10px;
+            font-size: 12px;
+            margin-bottom: 15px;
+        }
+
+        .ai-label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 5px;
+            font-size: 10px;
+        }
+
+        .card-actions {
+            margin-top: auto;
+            text-align: right;
+        }
+
+        .read-more {
+            color: #000;
+            font-weight: bold;
+            font-size: 12px;
+            text-decoration: none;
+        }
+
+        /* MODAL */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.9);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            border: 5px solid #000; /* Brutalist border for wireframe feel */
+        }
+
+        .modal-overlay.open {
+            display: flex;
+        }
+
+        .modal-content {
+            background: #fff;
+            border: 2px solid #000;
+            width: 600px;
+            max-width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            padding: 30px;
+            box-shadow: 10px 10px 0px #000; /* Hard shadow */
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #000;
+            padding-bottom: 10px;
+        }
+
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        /* EMAIL PREVIEW SPECIFIC */
+        .email-preview-box {
+            border: 1px solid #ccc;
+            padding: 20px;
+            background: #f9f9f9;
+            font-family: Arial, sans-serif; /* Simulate Email font */
+        }
+
+        .email-section-title {
+            color: #003366; /* Using LPPA blue just for the email preview hint */
+            border-bottom: 1px solid #ccc;
+            padding-bottom: 5px;
+            margin-top: 15px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- HEADER -->
+        <header>
+            <div class="header-content">
+                <div class="logo-placeholder">
+                    [LOGO] LPPA MEDIA MONITOR
+                </div>
+                <button class="btn" onclick="openModal('settingsModal')">⚙️ Settings</button>
+            </div>
+        </header>
+
+        <!-- MAIN CONTROLS -->
+        <div class="controls-bar">
+            <select>
+                <option>Last 24 Hours</option>
+                <option>Last 48 Hours</option>
+                <option>Last 7 Days</option>
+            </select>
+            
+            <div class="search-group">
+                <input type="text" id="searchInput" class="search-input" placeholder="Search keywords in results..." onkeyup="filterCards()">
+                <button class="btn btn-primary">Search</button>
+            </div>
+
+            <button class="btn" onclick="generateEmail()">✉️ Generate Daily Email</button>
+        </div>
+
+        <!-- CATEGORY FILTERS -->
+        <div class="filters" id="filterContainer">
+            <div class="filter-chip active" data-category="all" onclick="setFilter('all')">[x] All Categories</div>
+            <div class="filter-chip" data-category="lppa" onclick="setFilter('lppa')">[ ] LPPA Corporate</div>
+            <div class="filter-chip" data-category="industry" onclick="setFilter('industry')">[ ] Industry</div>
+            <div class="filter-chip" data-category="clients" onclick="setFilter('clients')">[ ] Clients</div>
+            <div class="filter-chip" data-category="peers" onclick="setFilter('peers')">[ ] Peers</div>
+            <div class="filter-chip" data-category="growth" onclick="setFilter('growth')">[ ] Growth Targets</div>
+            <div class="filter-chip" data-category="sector" onclick="setFilter('sector')">[ ] Sector Titles</div>
+            <div class="filter-chip" data-category="regulation" onclick="setFilter('regulation')">[ ] Regulation</div>
+        </div>
+
+        <!-- CONTENT GRID -->
+        <div class="news-grid" id="newsGrid">
+            <!-- Cards will be injected via JS -->
+        </div>
+
+        <!-- FOOTER -->
+        <div style="margin-top: 50px; text-align: center; border-top: 2px solid #000; padding-top: 20px; font-size: 12px;">
+            <p>LPPA INTERNAL USE ONLY | v1.0 WIREFRAME | Powered by Azure AI</p>
+        </div>
+    </div>
+
+    <!-- SETTINGS MODAL -->
+    <div class="modal-overlay" id="settingsModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Configuration</h2>
+                <button class="close-modal" onclick="closeModal('settingsModal')">X</button>
+            </div>
+            <p>Enter your API keys below. These will be saved to your browser's local storage.</p>
+            
+            <div style="margin-bottom: 15px;">
+                <label style="display:block; margin-bottom: 5px; font-weight:bold;">Google Search API Key:</label>
+                <input type="password" value="****************" style="width: 100%;">
+            </div>
+
+            <div style="margin-bottom: 15px;">
+                <label style="display:block; margin-bottom: 5px; font-weight:bold;">Search Engine ID (cx):</label>
+                <input type="text" value="0123456789:abcdefg" style="width: 100%;">
+            </div>
+
+            <div style="margin-bottom: 15px;">
+                <label style="display:block; margin-bottom: 5px; font-weight:bold;">Azure OpenAI Key:</label>
+                <input type="password" value="****************" style="width: 100%;">
+            </div>
+
+            <div style="text-align: right; margin-top: 20px;">
+                <button class="btn" onclick="closeModal('settingsModal')">Cancel</button>
+                <button class="btn btn-primary" onclick="closeModal('settingsModal')">Save Configuration</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- EMAIL MODAL -->
+    <div class="modal-overlay" id="emailModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Daily Email Preview</h2>
+                <button class="close-modal" onclick="closeModal('emailModal')">X</button>
+            </div>
+            <p>Copy the content below and paste it into Outlook.</p>
+            
+            <div class="email-preview-box" id="emailPreviewContent">
+                <!-- Email HTML injected here -->
+            </div>
+
+            <div style="text-align: right; margin-top: 20px;">
+                <button class="btn" onclick="closeModal('emailModal')">Close</button>
+                <button class="btn btn-primary" onclick="alert('Copied to clipboard!')">Copy to Clipboard</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // MOCK DATA
+        const mockData = [
+            { cat: 'lppa', source: 'Pensions Age', title: 'LPPA Wins Customer Service Award', date: '2h ago', summary: 'LPPA recognised for digital transformation efforts. CEO quotes improved response times.' },
+            { cat: 'clients', source: 'BBC News', title: 'Lancashire Fire: Union Ballot Results', date: '4h ago', summary: 'FBU members in Lancashire vote 60/40 to accept new pay deal. No strike action planned.' },
+            { cat: 'regulation', source: 'The Pensions Regulator', title: 'New Dashboard Connection Guidance', date: '5h ago', summary: 'TPR releases updated timeline for staging. Administrators urged to check data quality.' },
+            { cat: 'peers', source: 'Room151', title: 'West Yorks Fund Invests in Solar', date: '1d ago', summary: '£50m commitment to UK solar infrastructure. Part of Net Zero 2030 strategy.' },
+            { cat: 'growth', source: 'LGC Plus', title: 'Tower Hamlets Pension Tender Live', date: '1d ago', summary: 'Council seeks new administration partner. Contract value est. £2m/year.' },
+            { cat: 'industry', source: 'Professional Pensions', title: 'LGPS Valuation Results Delayed', date: '1d ago', summary: 'Government actuary announces 3-month delay due to data issues. Impact on contribution rates.' },
+            { cat: 'clients', source: 'Local Gov', title: 'Hertfordshire Pension Fund ESG Report', date: '2d ago', summary: 'Fund commits to divesting from thermal coal. New carbon targets set for 2028.' },
+            { cat: 'sector', source: 'Pensions Age', title: 'Top 10 Admin Challenges 2026', date: '2d ago', summary: 'Recruitment and retention top the list. McCloud remedy workload cited as major factor.' }
+        ];
+
+        // RENDER GRID
+        function renderGrid(filterCat = 'all') {
+            const grid = document.getElementById('newsGrid');
+            const searchVal = document.getElementById('searchInput').value.toLowerCase();
+            grid.innerHTML = '';
+
+            mockData.forEach(item => {
+                // Filter Logic
+                if (filterCat !== 'all' && item.cat !== filterCat) return;
+                if (searchVal && !item.title.toLowerCase().includes(searchVal) && !item.summary.toLowerCase().includes(searchVal)) return;
+
+                // Create Card
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.innerHTML = `
+                    <div class="card-tag">${item.cat.toUpperCase()}</div>
+                    <div class="card-source">${item.source} • ${item.date}</div>
+                    <div class="card-title">${item.title}</div>
+                    <div class="ai-summary-box">
+                        <span class="ai-label">✨ AI Summary:</span>
+                        ${item.summary}
+                    </div>
+                    <div class="card-actions">
+                        <a href="#" class="read-more">Read Full Article -></a>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        // FILTER LOGIC
+        function setFilter(category) {
+            // Update UI
+            document.querySelectorAll('.filter-chip').forEach(chip => {
+                chip.classList.remove('active');
+                if(chip.dataset.category === category) chip.classList.add('active');
+                
+                // Update text to simulate checkbox state
+                if(chip.dataset.category === category) {
+                    chip.innerText = `[x] ${chip.innerText.replace('[ ] ', '').replace('[x] ', '')}`;
+                } else {
+                    chip.innerText = `[ ] ${chip.innerText.replace('[ ] ', '').replace('[x] ', '')}`;
+                }
+            });
+            renderGrid(category);
+        }
+
+        function filterCards() {
+            // Trigger render with current active filter
+            const activeCat = document.querySelector('.filter-chip.active').dataset.category;
+            renderGrid(activeCat);
+        }
+
+        // MODAL LOGIC
+        function openModal(id) {
+            document.getElementById(id).classList.add('open');
+        }
+
+        function closeModal(id) {
+            document.getElementById(id).classList.remove('open');
+        }
+
+        // GENERATE EMAIL LOGIC
+        function generateEmail() {
+            const container = document.getElementById('emailPreviewContent');
+            let html = `
+                <h3 style="color:#003366; border-bottom: 2px solid #003366;">LPPA Media Digest - ${new Date().toLocaleDateString()}</h3>
+                <p>Here is your daily summary of pension news.</p>
+            `;
+
+            // Group by category for email
+            const categories = [...new Set(mockData.map(item => item.cat))];
+            
+            categories.forEach(cat => {
+                const items = mockData.filter(i => i.cat === cat);
+                if(items.length > 0) {
+                    html += `<div class="email-section-title" style="text-transform:uppercase; margin-top:15px; border-bottom:1px solid #999;">${cat}</div>`;
+                    items.forEach(item => {
+                        html += `
+                            <div style="margin-bottom: 10px; padding-bottom: 10px; border-bottom: 1px dotted #ccc;">
+                                <div style="font-weight:bold; color:#333;">${item.title}</div>
+                                <div style="font-size:12px; color:#666;">${item.source}</div>
+                                <div style="font-style:italic; font-size:13px; margin-top:4px;">"${item.summary}"</div>
+                                <a href="#" style="font-size:11px;">Read more</a>
+                            </div>
+                        `;
+                    });
+                }
+            });
+
+            container.innerHTML = html;
+            openModal('emailModal');
+        }
+
+        // INITIAL LOAD
+        renderGrid();
+
+    </script>
+</body>
+</html>
